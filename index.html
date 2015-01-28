@@ -7,12 +7,20 @@
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="angular-minieditor.css">
 </head>
-<body ng-app="minieditor">
-  <span ng-init="content = '1111';"></span>
-  {{content}}
-  <minieditor mini-id="aaa" mini-class="bbb" mini-theme="bootstarp" ng-model="content"></minieditor>
+<body ng-app="app">
+  <div ng-controller="testCtrl">
+    <minieditor mini-options="{id: 'minieditor-1', class: 'minieditor-1', width: '800', height: '200'}" ng-model="content"></minieditor>
+  </div>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/angular/angular.min.js"></script>
   <script src="angular-minieditor.js"></script>
+  <script>
+    angular.module('app', ['minieditor']).run();
+    angular.module('app').controller('testCtrl',
+      function($scope) {
+        $scope.content = 'This a test!';
+      }
+    );
+  </script>
 </body>
 </html>

@@ -2,10 +2,17 @@
 angular.module('minieditor', []).directive('minieditor', function($compile, minieditorUI) {
 
   function controller ($scope) {
+    if (!angular.isObject($scope.options)) {
+      $scope.options = {};
+    }
+    if (!angular.isDefined($scope.options.theme)) {
+      $scope.options.theme = 'bootstrap';
+    }
+    
   }
 
   function link($scope, $element, $attrs, $ctrl) {
-    $element.html(minieditorUI.getTemplate($scope.theme));
+    $element.html(minieditorUI.getTemplate($scope.options));
     $compile($element.contents())($scope);
 
     var editor = $element.find('div.minieditor-content');
@@ -27,15 +34,11 @@ angular.module('minieditor', []).directive('minieditor', function($compile, mini
   }
 
   return {
-    template: '<div id="{{id}}" class="{{class}} minieditor minieditor-{{theme}}"></div>',
+    template: '<div id="{{options.id}}" class="{{options.class}} minieditor minieditor-{{options.theme?options.theme:\'bootstarp\'}}" ng-attr-style="width:{{options.width? options.width + \'px\':\'100%\'}};"></div>',
     restrict: 'E',
     scope: {
       value: '=ngModel',
-      theme: '@miniTheme',
-      id: '@miniId',
-      'class': '@miniClass',
-      width: '@miniWidth',
-      height: '@miniHeight'
+      options: '=miniOptions'
     },
     replace: true,
     require: 'ngModel',
@@ -46,7 +49,7 @@ angular.module('minieditor', []).directive('minieditor', function($compile, mini
 
   function getBootstarpTemplate() {
     var menu = '<div class="minieditor-menu"></div>';
-    var content = '<div contenteditable="true" class="minieditor-content" ng-attr-style="height:{{height || \'100px\'}};"></div>';
+    var content = '<div contenteditable="true" class="minieditor-content" ng-attr-style="height:{{options.height? options.height + \'px\':\'100px\'}};"></div>';
     return menu + content;
   }
 
@@ -54,11 +57,8 @@ angular.module('minieditor', []).directive('minieditor', function($compile, mini
     return 'semantic';
   }
 
-  function getTemplate(theme) {
-    if (!angular.isDefined(theme)) {
-      theme = 'bootstarp';
-    }
-    switch (theme) {
+  function getTemplate(options) {
+    switch (options.theme) {
       case 'bootstrap':
         return getBootstarpTemplate();
         break;
