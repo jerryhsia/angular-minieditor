@@ -1,0 +1,17 @@
+/* Basic style */
+.minieditor {
+
+}
+
+.minieditor-menu {
+
+}
+
+.minieditor-content {
+  resize: vertical;
+  overflow-y: scroll;
+}
+
+/* Bootstrap theme */
+
+/* Semantic theme */
