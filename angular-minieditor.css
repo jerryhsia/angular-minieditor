@@ -11,6 +11,19 @@
   width: 100%;
   resize: vertical;
   overflow-y: scroll;
+
+  background-color: white;
+  border-collapse: separate;
+  border: 1px solid rgb(204, 204, 204);
+  padding: 4px;
+  box-sizing: content-box;
+  box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
+  border-radius: 3px;
+  outline: none;
+}
+
+.minieditor-content:focus {
+  outline: -webkit-focus-ring-color auto 5px;
 }
 
 /* Bootstrap theme */

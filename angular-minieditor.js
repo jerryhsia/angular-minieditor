@@ -1,14 +1,30 @@
-'use strict';
-angular.module('minieditor', []).directive('minieditor', function($compile, minieditorUI) {
+/**
+ * Angular minieditor
+ * Code licensed under the MIT License:
+ * https://github.com/jerryhsia/angular-minieditor/blob/master/LICENSE
+ *
+ * @version 1.0.0
+ * @author  Jerry Hsia (xiajie9916@gmail.com)
+ * @description A mini text editor for angularjs.
+ */
+
+ 'use strict';
+angular.module('minieditor', []).directive('minieditor', function($compile, $timeout, minieditorUI) {
 
   function controller ($scope) {
     if (!angular.isObject($scope.options)) {
       $scope.options = {};
     }
+
     if (!angular.isDefined($scope.options.theme)) {
       $scope.options.theme = 'bootstrap';
     }
-    
+
+    if (!angular.isDefined($scope.options.menu)) {
+      $scope.options.menu = [
+        ['bold', 'italic']
+      ];
+    }
   }
 
   function link($scope, $element, $attrs, $ctrl) {
@@ -17,12 +33,10 @@ angular.module('minieditor', []).directive('minieditor', function($compile, mini
 
     var editor = $element.find('div.minieditor-content');
 
-    // Model -> View
     $ctrl.$render = function() {
       editor.html($ctrl.$viewValue);
     };
 
-    // View -> Model
     editor.on('input keyup paste mouseup', function(event) {
       var content = editor.html();
       if (content == '<br>') {
@@ -31,6 +45,23 @@ angular.module('minieditor', []).directive('minieditor', function($compile, mini
       $ctrl.$setViewValue(content);
     });
 
+    $scope.format = function(command, arg) {
+      document.execCommand(command, false, arg);
+    };
+
+    function getCommandState(command) {
+      return document.queryCommandState(command);
+    }
+
+    function getCommandValue(command) {
+      return document.queryCommandValue(command);
+    }
+
+    editor.on('click keyup focus mouseup', function() {
+      $timeout(function() {
+        $scope.isBold = getCommandState('bold');
+      }, 50);
+    });
   }
 
   return {
@@ -47,26 +78,36 @@ angular.module('minieditor', []).directive('minieditor', function($compile, mini
   };
 }).factory('minieditorUI', function() {
 
-  function getBootstarpTemplate() {
-    var menu = '<div class="minieditor-menu"></div>';
-    var content = '<div contenteditable="true" class="minieditor-content" ng-attr-style="height:{{options.height? options.height + \'px\':\'100px\'}};"></div>';
-    return menu + content;
-  }
-
-  function getSemanticTemplate() {
-    return 'semantic';
-  }
-
   function getTemplate(options) {
-    switch (options.theme) {
-      case 'bootstrap':
-        return getBootstarpTemplate();
+    return getMenu(options) + getContent(options);
+  }
+
+  function getContent(options) {
+    return '<div contenteditable="true" class="minieditor-content" ng-attr-style="height:{{options.height? options.height + \'px\':\'100px\'}};"></div>';
+  }
+
+  function getMenu(options) {
+    var menu = options.menu;
+    var menuText = '<div class="minieditor-menu">';
+    for (var i = 0; i < menu.length; i++) {
+      menuText += '<div class="btn-group" role="group">';
+      for (var j = 0; j < menu[i].length; j++) {
+        menuText += getButton(menu[i][j]);
+      }
+      menuText += '</div>';
+    }
+    menuText += '</div>';
+    return menuText;
+  }
+
+  function getButton(item) {
+    switch (item) {
+      case 'bold':
+        return '<button ng-click="format(\'bold\')" ng-class="{active: isBold}" type="button" class="btn btn-default"><i class="fa fa-bold"></i></button>';
         break;
-      case 'semantic':
-        return getSemanticTemplate();
+      default:
+        return '';
         break;
-      default :
-        return getBootstarpTemplate();
     }
   }
 
