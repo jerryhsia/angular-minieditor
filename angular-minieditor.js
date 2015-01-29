@@ -148,6 +148,9 @@
 
   angular.module('jerryhsia.minieditor', []).directive('minieditor', function($compile, $timeout, minieditorUI) {
     function link($scope, $element, $attrs, $ctrl) {
+      if (!angular.isDefined($scope.options) || !angular.isObject($scope.options)) {
+        $scope.options = {};
+      }
       $element.html(minieditorUI.getTemplate($scope.options));
       $compile($element.contents())($scope);
 
