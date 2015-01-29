@@ -44,9 +44,9 @@ Directive attributes
 Option|Description
 ---------------------|---------------
 **ng-model**		 | 			REQUIRED - The angular data model
-**options** 	 |			OPTIONAL-The editor configration
+**mini-options** 	 |			OPTIONAL-The editor configration
 
-Options
+Editor options
 ---
 
 Attribute|Type|Description
