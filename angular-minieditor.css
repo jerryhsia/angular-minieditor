@@ -7,6 +7,10 @@
   width: 100%;
 }
 
+.minieditor-menu-group {
+  margin-right: 5px;
+}
+
 .minieditor-content {
   width: 100%;
   resize: vertical;
