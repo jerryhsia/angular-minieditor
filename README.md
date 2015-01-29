@@ -49,8 +49,8 @@ Option|Description
 Options
 ---
 
-Attribute|type|Description
----------------------|---------------
+Attribute|Type|Description
+---------------|------|---------------
 **id**|String|OPTIONAL-The id attribute value 
 **class**|String|OPTIONAL-The class attribute value
 **width**|Integer|OPTIONAL-The width of editor
