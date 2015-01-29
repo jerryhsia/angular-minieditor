@@ -1,0 +1,35 @@
+/* Basic style */
+.minieditor {
+
+}
+
+.minieditor-menu {
+  width: 100%;
+}
+
+.minieditor-menu-group {
+  margin-right: 5px;
+}
+
+.minieditor-content {
+  width: 100%;
+  resize: vertical;
+  overflow-y: scroll;
+
+  background-color: white;
+  border-collapse: separate;
+  border: 1px solid rgb(204, 204, 204);
+  padding: 4px;
+  box-sizing: content-box;
+  box-shadow: rgba(0, 0, 0, 0.07) 0 1px 1px 0 inset;
+  border-radius: 3px;
+  outline: none;
+}
+
+.minieditor-content:focus {
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+/* Bootstrap theme */
+
+/* Semantic theme */
