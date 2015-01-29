@@ -23,14 +23,14 @@
     <minieditor mini-options="{id: 'minieditor-1', class: 'minieditor-1', height: '200'}" ng-model="content"></minieditor>
     <div ng-bind-html="content|html"></div>
   </div>
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
   <script src="angular-minieditor.js"></script>
   <script>
-    angular.module('app', ['minieditor']).run();
+    angular.module('app', ['jerryhsia.minieditor']).run();
     angular.module('app').controller('testCtrl',
-      function($scope, $sce) {
-        $scope.content = '<b>This a test!</b>';
+      function($scope) {
+        $scope.content = 'This a test!';
       }
     ).filter(
       'html', ['$sce', function ($sce) {

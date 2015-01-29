@@ -94,18 +94,59 @@
       title: 'Remove format',
       icon: 'eraser',
       arg: false
+    },
+    fontsize: {
+      command: 'fontsize',
+      type: 'button',
+      title: 'Font size',
+      icon: 'text-height',
+      arg: true,
+      promptTitle: 'Enter the number of 1-7',
+      defaultValue: 3,
+      filter: function(value) {
+        value = value ? parseInt(value) : false;
+        if (!(value >= 1 && value <= 7)) {
+          value = 2;
+        }
+        return value;
+      }
+    },
+    createlink: {
+      command: 'createlink',
+      type: 'button',
+      title: 'Create link',
+      icon: 'link',
+      arg: true,
+      promptTitle: 'Enter the link url',
+      defaultValue: 'http://',
+      filter: function(value) {
+        return value;
+      }
+    },
+    insertimage: {
+      command: 'insertimage',
+      type: 'button',
+      title: 'Insert image',
+      icon: 'image',
+      arg: true,
+      promptTitle: 'Enter the image url',
+      defaultValue: 'http://',
+      filter: function(value) {
+        return value;
+      }
     }
   };
 
   var defaultMenus = [
     ['bold', 'italic', 'underline', 'strikethrough'],
+    ['fontsize'],
     ['justifyleft', 'justifycenter', 'justifyright'],
     ['insertunorderedlist', 'insertorderedlist'],
     ['indent', 'outdent'],
-    ['removeformat']
+    ['removeformat', 'createlink', 'insertimage']
   ];
 
-  angular.module('minieditor', []).directive('minieditor', function($compile, $timeout, minieditorUI) {
+  angular.module('jerryhsia.minieditor', []).directive('minieditor', function($compile, $timeout, minieditorUI) {
     function link($scope, $element, $attrs, $ctrl) {
       $element.html(minieditorUI.getTemplate($scope.options));
       $compile($element.contents())($scope);
@@ -124,24 +165,6 @@
         $ctrl.$setViewValue(content);
       });
 
-      $scope.states = {};
-      function refreshState() {
-        angular.forEach(miniCommands, function(commandObj, command) {
-          var state = getCommandState(command);
-          if (state) {
-            console.log(command+'--->'+state);
-            $scope.states[command] = state;
-          } else {
-            delete $scope.states[command];
-          }
-        });
-      }
-
-      $scope.exec = function(command, arg) {
-        document.execCommand(command, false, arg);
-        refreshState();
-      };
-
       function getCommandState(command) {
         return document.queryCommandState(command);
       }
@@ -149,6 +172,71 @@
       function getCommandValue(command) {
         return document.queryCommandValue(command);
       }
+
+      function isTag(tag) {
+        var selection = window.getSelection().getRangeAt(0);
+        if (selection) {
+          if (selection.startContainer.parentNode.tagName === tag.toUpperCase()
+            || selection.endContainer.parentNode.tagName === tag.toUpperCase()
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+
+      $scope.states = {};
+      var refreshing = false;
+      function refreshState() {
+        if (refreshing) return;
+        refreshing = true;
+        angular.forEach(miniCommands, function(commandObj, command) {
+          if (commandObj.arg) {
+            var value = getCommandValue(command);
+            if (command == 'createlink') {
+              value = isTag('a');
+            }
+
+            if (value) {
+              $scope.states[command] = value;
+            } else {
+              delete $scope.states[command];
+            }
+          } else {
+            var state = getCommandState(command);
+            if (state) {
+              $scope.states[command] = state;
+            } else {
+              delete $scope.states[command];
+            }
+          }
+        });
+        refreshing = false;
+      }
+
+      $scope.exec = function(command) {
+        var commandObj = miniCommands[command];
+        if (commandObj.arg) {
+          $timeout(function() {
+            var defaultValue = getCommandValue(command);
+            if (!defaultValue) {
+              defaultValue = commandObj.defaultValue;
+            }
+            var value = prompt(commandObj.promptTitle, defaultValue);
+            if (value && value.length > 0) {
+              value = commandObj.filter(value);
+              document.execCommand(command, false, value);
+              refreshState();
+            }
+          }, 50);
+        } else {
+          document.execCommand(command, false, null);
+          refreshState();
+        }
+      };
 
       editor.on('click keyup focus mouseup blur', function() {
         $timeout(function() {
@@ -204,7 +292,7 @@
     function getMenuItem(commandObj) {
       switch (commandObj.type) {
         case 'button':
-          return '<button ng-click="exec(\'' + commandObj.command + '\')" ng-class="{active: states[\''+commandObj.command+'\']}" type="button" class="btn btn-default" title="'+commandObj.title+'"><i class="fa fa-'+commandObj.icon+'"></i></button>';
+          return '<button ng-click="exec(\'' + commandObj.command + '\')" ng-class="{active: states[\''+commandObj.command+'\']}" type="button" class="btn btn-default" title="'+commandObj.title+'" unselectable="on"><i class="fa fa-'+commandObj.icon+'"></i></button>';
           break;
         default:
           return '';
