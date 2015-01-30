@@ -20,7 +20,7 @@
 </head>
 <body ng-app="app">
   <div class="main" ng-controller="testCtrl">
-    <minieditor mini-options="{id: 'minieditor-1', class: 'minieditor-1', height: '200'}" ng-model="content"></minieditor>
+    <minieditor options="{id: 'minieditor-1', class: 'minieditor-1', height: '200'}" ng-model="content"></minieditor>
     <div ng-bind-html="content|html"></div>
   </div>
   <script src="bower_components/jquery/dist/jquery.js"></script>
