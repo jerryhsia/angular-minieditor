@@ -3,7 +3,7 @@
  * Code licensed under the MIT License:
  * https://github.com/jerryhsia/angular-minieditor/blob/master/LICENSE
  *
- * @version 1.0.0
+ * @version 1.0.1
  * @author  Jerry Hsia (xiajie9916@gmail.com)
  * @description A mini text editor for angularjs.
  */
@@ -148,6 +148,9 @@
 
   angular.module('jerryhsia.minieditor', []).directive('minieditor', function($compile, $timeout, minieditorUI) {
     function link($scope, $element, $attrs, $ctrl) {
+      if (!angular.isDefined($scope.options) || !angular.isObject($scope.options)) {
+        $scope.options = {};
+      }
       $element.html(minieditorUI.getTemplate($scope.options));
       $compile($element.contents())($scope);
 
@@ -246,11 +249,11 @@
     }
 
     return {
-      template: '<div id="{{options.id}}" class="{{options.class}} minieditor minieditor-{{options.theme?options.theme:\'bootstarp\'}}" ng-attr-style="width:{{options.width? options.width + \'px\':\'100%\'}};"></div>',
+      template: '<div id="{{options.id}}" class="{{options.class}} minieditor" ng-attr-style="width:{{options.width? options.width + \'px\':\'100%\'}};"></div>',
       restrict: 'E',
       scope: {
         value: '=ngModel',
-        options: '=miniOptions'
+        options: '=options'
       },
       replace: true,
       require: 'ngModel',
