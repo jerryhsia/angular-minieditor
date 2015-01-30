@@ -249,7 +249,7 @@
     }
 
     return {
-      template: '<div id="{{options.id}}" class="{{options.class}} minieditor minieditor-{{options.theme?options.theme:\'bootstarp\'}}" ng-attr-style="width:{{options.width? options.width + \'px\':\'100%\'}};"></div>',
+      template: '<div id="{{options.id}}" class="{{options.class}} minieditor" ng-attr-style="width:{{options.width? options.width + \'px\':\'100%\'}};"></div>',
       restrict: 'E',
       scope: {
         value: '=ngModel',
