@@ -3,7 +3,7 @@
  * Code licensed under the MIT License:
  * https://github.com/jerryhsia/angular-minieditor/blob/master/LICENSE
  *
- * @version 1.0.0
+ * @version 1.0.1
  * @author  Jerry Hsia (xiajie9916@gmail.com)
  * @description A mini text editor for angularjs.
  */
@@ -253,7 +253,7 @@
       restrict: 'E',
       scope: {
         value: '=ngModel',
-        options: '=miniOptions'
+        options: '=options'
       },
       replace: true,
       require: 'ngModel',

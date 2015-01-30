@@ -2,13 +2,13 @@
   "name": "angular-minieditor",
   "author": "Jerry Hsia",
   "description": "A mini text editor for angularjs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/jerryhsia/angular-minieditor",
   "main": "./angular-minieditor.js",
   "dependencies": {
     "angular": ">= 1.0.0",
-    "font-awesome": ">= 4.3.0",
+    "font-awesome": ">= 4.0.0",
     "jquery": ">= 1.11.0",
-    "bootstrap": ">= 3.3.0"
+    "bootstrap": ">= 3.0.0"
   }
 }

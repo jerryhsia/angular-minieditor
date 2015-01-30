@@ -35,7 +35,7 @@ angular.module('app', ['jerryhsia.minieditor']);
 - Use the directive
 
 ```html
-<minieditor ng-model="content" mini-options="options"></minieditor>
+<minieditor ng-model="content" options="options"></minieditor>
 ```
 
 Directive attributes
@@ -44,9 +44,9 @@ Directive attributes
 Option|Description
 ---------------------|---------------
 **ng-model**		 | 			REQUIRED - The angular data model
-**mini-options** 	 |			OPTIONAL-The editor configration
+**options** 	 |			OPTIONAL-The editor configration
 
-Editor options
+Editor configration options
 ---
 
 Attribute|Type|Description
@@ -55,7 +55,7 @@ Attribute|Type|Description
 **class**|String|OPTIONAL-The class attribute value
 **width**|Integer|OPTIONAL-The width of editor
 **height**|Integer|OPTIONAL-The height of editor content
-**menus**|Array|OPTIONAL-The button names
+**menus**|Array|OPTIONAL-The menu button names
 
 
 
