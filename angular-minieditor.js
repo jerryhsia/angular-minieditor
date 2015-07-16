@@ -4,7 +4,7 @@
  * https://github.com/jerryhsia/angular-minieditor/blob/master/LICENSE
  *
  * @version 1.0.1
- * @author  Jerry Hsia (xiajie9916@gmail.com)
+ * @author  Jerry Hsia (jerry9916@qq.com)
  * @description A mini text editor for angularjs.
  */
 
