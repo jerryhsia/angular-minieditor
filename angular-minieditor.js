@@ -146,7 +146,7 @@
     ['removeformat', 'createlink', 'insertimage']
   ];
 
-  angular.module('jerryhsia.minieditor', []).directive('minieditor', function($compile, $timeout, minieditorUI) {
+  angular.module('jerryhsia.minieditor', []).directive('minieditor', ['$compile', '$timeout', 'minieditorUI', function($compile, $timeout, minieditorUI) {
     function link($scope, $element, $attrs, $ctrl) {
       if (!angular.isDefined($scope.options) || !angular.isObject($scope.options)) {
         $scope.options = {};
@@ -259,7 +259,7 @@
       require: 'ngModel',
       link: link
     };
-  }).factory('minieditorUI', function() {
+  }]).factory('minieditorUI', function() {
 
     function getTemplate(options) {
       return getMenuTemplate(options) + getContentTemplate(options);
