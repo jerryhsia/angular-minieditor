@@ -4,7 +4,7 @@
   "description": "A mini text editor for angularjs",
   "version": "1.0.1",
   "homepage": "https://github.com/jerryhsia/angular-minieditor",
-  "main": "./angular-minieditor.js",
+  "main": [ "./angular-minieditor.js", "./angular-minieditor.css" ],
   "dependencies": {
     "angular": ">= 1.0.0",
     "font-awesome": ">= 4.0.0",

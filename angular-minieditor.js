@@ -3,14 +3,14 @@
  * Code licensed under the MIT License:
  * https://github.com/jerryhsia/angular-minieditor/blob/master/LICENSE
  *
- * @version 1.0.1
+ * @version 1.0.2
  * @author  Jerry Hsia (jerry9916@qq.com)
  * @description A mini text editor for angularjs.
  */
 
 'use strict';
 (function(){
-  var miniCommands = {
+  var defaultCommands = {
     bold: {
       command: 'bold',
       type: 'button',
@@ -196,6 +196,8 @@
       function refreshState() {
         if (refreshing) return;
         refreshing = true;
+
+        var miniCommands = angular.isDefined($scope.options.commands) ? angular.extend({}, $scope.options.commands, defaultCommands) : defaultCommands;
         angular.forEach(miniCommands, function(commandObj, command) {
           if (commandObj.arg) {
             var value = getCommandValue(command);
@@ -221,6 +223,7 @@
       }
 
       $scope.exec = function(command) {
+          var miniCommands = angular.isDefined($scope.options.commands) ? angular.extend({}, $scope.options.commands, defaultCommands) : defaultCommands;
         var commandObj = miniCommands[command];
         if (commandObj.arg) {
           $timeout(function() {
@@ -230,13 +233,15 @@
             }
             var value = prompt(commandObj.promptTitle, defaultValue);
             if (value && value.length > 0) {
-              value = commandObj.filter(value);
-              document.execCommand(command, false, value);
+                value = commandObj.filter(value);
+                if (!commandObj.handler) document.execCommand(command, false, value);
+                else commandObj.handler(value);
               refreshState();
             }
           }, 50);
         } else {
-          document.execCommand(command, false, null);
+            if (!commandObj.handler) document.execCommand(command, false, null);
+            else commandObj.handler(value);
           refreshState();
         }
       };
@@ -277,13 +282,14 @@
         menus = defaultMenus;
       }
       var menuText = '<div class="minieditor-menu">';
+      var miniCommands = angular.isDefined(options.commands) ? angular.extend({}, options.commands, defaultCommands) : defaultCommands;
       for (var i = 0; i < menus.length; i++) {
         menuText += '<div class="btn-group minieditor-menu-group" role="group">';
         for (var j = 0; j < menus[i].length; j++) {
           if (angular.isDefined(miniCommands[menus[i][j]])) {
             menuText += getMenuItem(miniCommands[menus[i][j]]);
           } else {
-            console.log('Unknow command: ' + menus[i][j]);
+            console.log('Unknown command: ' + menus[i][j]);
           }
         }
         menuText += '</div>';
